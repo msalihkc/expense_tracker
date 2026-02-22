@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Bell, Search, Sun, Moon, Menu } from "lucide-react";
-import { mockUser } from "@/lib/mockData";
+import { Bell, Search, Sun, Moon, Menu, User } from "lucide-react";
+import { getUserProfile } from "@/app/actions/database";
 
 export function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
     const [isDarkMode, setIsDarkMode] = useState(false);
+    const [profile, setProfile] = useState<{ name: string; avatar_url: string | null } | null>(null);
 
     useEffect(() => {
         // Check initial user preference or system preference
@@ -17,6 +18,15 @@ export function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
                 document.documentElement.classList.add("dark");
             }
         }
+
+        // Fetch user profile
+        const fetchProfile = async () => {
+            const userProfile = await getUserProfile();
+            if (userProfile) {
+                setProfile({ name: userProfile.name, avatar_url: userProfile.avatar_url });
+            }
+        };
+        fetchProfile();
     }, []);
 
     const toggleDarkMode = () => {
@@ -65,14 +75,21 @@ export function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
                 <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-800 mx-1"></div>
 
                 <button className="flex items-center gap-2 hover:opacity-80 transition-opacity pl-1">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                        src={mockUser.avatarUrl}
-                        alt={mockUser.name}
-                        className="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-700 object-cover"
-                    />
+                    {profile?.avatar_url ? (
+                        <img
+                            src={profile.avatar_url}
+                            alt={profile?.name || "User avatar"}
+                            className="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-700 object-cover"
+                        />
+                    ) : (
+                        <div className="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-500">
+                            <User className="w-5 h-5" />
+                        </div>
+                    )}
                     <div className="hidden sm:block text-left">
-                        <p className="text-sm font-medium text-zinc-900 dark:text-white leading-tight">{mockUser.name}</p>
+                        <p className="text-sm font-medium text-zinc-900 dark:text-white leading-tight">
+                            {profile?.name || "Loading..."}
+                        </p>
                     </div>
                 </button>
             </div>

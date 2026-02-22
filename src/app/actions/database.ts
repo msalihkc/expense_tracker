@@ -9,6 +9,50 @@ async function getUserId() {
     return cookieStore.get('expense_user_id')?.value
 }
 
+// --- PROFILE ---
+
+export async function getUserProfile() {
+    const supabase = await createClient()
+    const userId = await getUserId()
+    if (!userId) return null
+
+    const { data, error } = await supabase
+        .from('users')
+        .select('name, email, avatar_url')
+        .eq('id', userId)
+        .single()
+
+    if (error) {
+        console.error("Error fetching user profile:", error)
+        return null
+    }
+
+    return data
+}
+
+export async function updateUserProfile(profile: { name: string; avatar_url: string | null }) {
+    const supabase = await createClient()
+    const userId = await getUserId()
+    if (!userId) return { error: "Unauthorized" }
+
+    const { error } = await supabase
+        .from('users')
+        .update({
+            name: profile.name,
+            avatar_url: profile.avatar_url
+        })
+        .eq('id', userId)
+
+    if (error) {
+        console.error("Error updating profile:", error)
+        return { error: error.message }
+    }
+
+    revalidatePath('/settings')
+    revalidatePath('/dashboard')
+    return { success: true }
+}
+
 // --- CATEGORIES ---
 
 export async function getCategories() {
