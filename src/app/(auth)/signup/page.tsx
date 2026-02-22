@@ -3,14 +3,14 @@
 import Link from "next/link";
 import { Wallet } from "lucide-react";
 import { useActionState, useEffect } from "react";
-import { signup } from "../../actions/auth";
+import { login } from "../../actions/auth";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
 function SignupForm() {
     const searchParams = useSearchParams();
     const message = searchParams.get('message');
-    const [state, formAction, pending] = useActionState(signup, null);
+    const [state, formAction, pending] = useActionState(login, null);
 
     useEffect(() => {
         if (state?.success) {
@@ -38,10 +38,10 @@ function SignupForm() {
 
             <form action={formAction} className="space-y-4">
                 <div>
-                    <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Full Name</label>
+                    <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Name</label>
                     <input
                         type="text"
-                        name="full_name"
+                        name="name"
                         required
                         className="w-full px-4 py-2.5 bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-lg text-zinc-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                         placeholder="John Doe"
@@ -55,16 +55,6 @@ function SignupForm() {
                         required
                         className="w-full px-4 py-2.5 bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-lg text-zinc-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                         placeholder="john@example.com"
-                    />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        required
-                        className="w-full px-4 py-2.5 bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-lg text-zinc-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                        placeholder="••••••••"
                     />
                 </div>
                 <button
