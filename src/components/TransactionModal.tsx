@@ -17,6 +17,9 @@ export function TransactionModal({ isOpen, onClose, categories, initialData, onS
     const [amount, setAmount] = useState(initialData?.amount?.toString() || '');
     const [categoryId, setCategoryId] = useState(initialData?.categoryId || categories[0]?.id || '');
     const [date, setDate] = useState(initialData?.date || new Date().toISOString().split('T')[0]);
+    const [paymentMode, setPaymentMode] = useState<"Cash" | "GPay" | "Other">(
+        (initialData?.paymentMode as "Cash" | "GPay" | "Other") || 'Cash'
+    );
     const [notes, setNotes] = useState(initialData?.notes || '');
 
     if (!isOpen) return null;
@@ -28,6 +31,7 @@ export function TransactionModal({ isOpen, onClose, categories, initialData, onS
             amount: parseFloat(amount),
             categoryId,
             date,
+            paymentMode,
             notes
         });
         onClose();
@@ -106,6 +110,19 @@ export function TransactionModal({ isOpen, onClose, categories, initialData, onS
                             onChange={(e) => setDate(e.target.value)}
                             className="w-full px-4 py-2.5 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-lg text-zinc-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                         />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Payment Mode</label>
+                        <select
+                            value={paymentMode}
+                            onChange={(e) => setPaymentMode(e.target.value as "Cash" | "GPay" | "Other")}
+                            className="w-full px-4 py-2.5 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-lg text-zinc-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all appearance-none"
+                        >
+                            <option value="Cash">Cash</option>
+                            <option value="GPay">GPay</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
 
                     <div>

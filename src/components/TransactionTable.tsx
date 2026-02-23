@@ -22,6 +22,7 @@ export function TransactionTable({ transactions, categories, onEdit, onDelete, l
                     <tr>
                         <th className="px-6 py-4 font-medium">Date</th>
                         <th className="px-6 py-4 font-medium">Category</th>
+                        <th className="px-6 py-4 font-medium">Payment Mode</th>
                         <th className="px-6 py-4 font-medium">Notes</th>
                         <th className="px-6 py-4 font-medium text-right">Amount</th>
                         {(onEdit || onDelete) && <th className="px-6 py-4 font-medium text-right">Actions</th>}
@@ -47,6 +48,16 @@ export function TransactionTable({ transactions, categories, onEdit, onDelete, l
                                         </div>
                                         <span className="font-medium text-zinc-900 dark:text-zinc-100">{category?.name || 'Unknown'}</span>
                                     </div>
+                                </td>
+                                <td className="px-6 py-4">
+                                    <span className={cn(
+                                        "px-2.5 py-1 text-xs font-medium rounded-md",
+                                        tx.paymentMode === 'Cash' ? "bg-amber-100 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300" :
+                                            tx.paymentMode === 'GPay' ? "bg-blue-100 text-blue-800 dark:bg-blue-500/20 dark:text-blue-300" :
+                                                "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300"
+                                    )}>
+                                        {tx.paymentMode}
+                                    </span>
                                 </td>
                                 <td className="px-6 py-4 text-zinc-500 dark:text-zinc-400 max-w-[200px] truncate">
                                     {tx.notes || '-'}
@@ -81,7 +92,7 @@ export function TransactionTable({ transactions, categories, onEdit, onDelete, l
                     })}
                     {displayTransactions.length === 0 && (
                         <tr>
-                            <td colSpan={5} className="px-6 py-12 text-center text-zinc-500 dark:text-zinc-400">
+                            <td colSpan={6} className="px-6 py-12 text-center text-zinc-500 dark:text-zinc-400">
                                 <div className="flex flex-col items-center justify-center">
                                     <div className="w-12 h-12 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center mb-3">
                                         <span className="text-xl">📊</span>

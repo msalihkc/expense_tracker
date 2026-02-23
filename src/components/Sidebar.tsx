@@ -11,6 +11,7 @@ import {
     Settings,
     Wallet,
     LogOut,
+    Bell,
 } from "lucide-react";
 import { logout } from "@/app/actions/auth";
 
@@ -19,6 +20,7 @@ const navItems = [
     { name: "Transactions", href: "/transactions", icon: ArrowRightLeft },
     { name: "Categories", href: "/categories", icon: Tags },
     { name: "Budgets", href: "/budgets", icon: PieChart },
+    { name: "Notifications", href: "/notifications", icon: Bell },
     { name: "Settings", href: "/settings", icon: Settings },
 ];
 

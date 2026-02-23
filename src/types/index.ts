@@ -13,6 +13,7 @@ export interface Transaction {
   type: TransactionType;
   categoryId: string;
   date: string;
+  paymentMode: "Cash" | "GPay" | "Other";
   notes?: string;
 }
 

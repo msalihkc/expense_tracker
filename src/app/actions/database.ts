@@ -73,14 +73,14 @@ export async function getCategories() {
     return data
 }
 
-export async function createCategory(name: string) {
+export async function createCategory(name: string, color: string) {
     const supabase = await createClient()
     const userId = await getUserId()
     if (!userId) return { error: "Unauthorized" }
 
     const { data, error } = await supabase
         .from('categories')
-        .insert([{ name, user_id: userId }])
+        .insert([{ name, color, user_id: userId }])
         .select()
         .single()
 
@@ -147,6 +147,7 @@ export async function createTransaction(transaction: {
     amount: number,
     type: 'income' | 'expense',
     date: string,
+    payment_mode: string,
     notes?: string
 }) {
     const supabase = await createClient()

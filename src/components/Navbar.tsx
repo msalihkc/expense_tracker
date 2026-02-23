@@ -1,21 +1,21 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Bell, Search, Sun, Moon, Menu, User } from "lucide-react";
+import { Search, Menu, User } from "lucide-react";
 import { getUserProfile } from "@/app/actions/database";
 
 export function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
-    const [isDarkMode, setIsDarkMode] = useState(false);
     const [profile, setProfile] = useState<{ name: string; avatar_url: string | null } | null>(null);
 
     useEffect(() => {
-        // Check initial user preference or system preference
+        // Fallback to system preference, no local storage saving
         if (typeof window !== "undefined") {
-            const isDark = document.documentElement.classList.contains("dark") ||
-                window.matchMedia("(prefers-color-scheme: dark)").matches;
-            setIsDarkMode(isDark);
-            if (isDark) {
+            const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+            if (systemPrefersDark) {
                 document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
             }
         }
 
@@ -29,14 +29,7 @@ export function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
         fetchProfile();
     }, []);
 
-    const toggleDarkMode = () => {
-        setIsDarkMode(!isDarkMode);
-        if (!isDarkMode) {
-            document.documentElement.classList.add("dark");
-        } else {
-            document.documentElement.classList.remove("dark");
-        }
-    };
+
 
     return (
         <header className="h-16 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between px-4 sm:px-6 lg:px-8 transition-colors duration-200 z-10 relative">
@@ -59,21 +52,6 @@ export function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
             </div>
 
             <div className="flex items-center gap-3 sm:gap-4">
-                <button
-                    onClick={toggleDarkMode}
-                    className="p-2 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
-                    aria-label="Toggle dark mode"
-                >
-                    {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                </button>
-
-                <button className="p-2 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors relative">
-                    <Bell className="w-5 h-5" />
-                    <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-zinc-900"></span>
-                </button>
-
-                <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-800 mx-1"></div>
-
                 <button className="flex items-center gap-2 hover:opacity-80 transition-opacity pl-1">
                     {profile?.avatar_url ? (
                         <img

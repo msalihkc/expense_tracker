@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Sidebar } from "@/components/Sidebar";
 import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import { cn } from "@/lib/utils";
 
 export default function DashboardLayout({
@@ -35,9 +36,12 @@ export default function DashboardLayout({
             {/* Main Content */}
             <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
                 <Navbar onMenuClick={() => setSidebarOpen(true)} />
-                <main className="flex-1 overflow-y-auto w-full p-4 sm:p-6 lg:p-8">
-                    <div className="max-w-7xl mx-auto space-y-6">
-                        {children}
+                <main className="flex-1 overflow-y-auto w-full">
+                    <div className="min-h-full flex flex-col p-4 sm:p-6 lg:p-8">
+                        <div className="max-w-7xl mx-auto w-full space-y-6 flex-1">
+                            {children}
+                        </div>
+                        <Footer />
                     </div>
                 </main>
             </div>

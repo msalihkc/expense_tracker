@@ -25,6 +25,7 @@ export default function TransactionsPage() {
                 type: t.type,
                 categoryId: t.category_id,
                 date: t.date,
+                paymentMode: t.payment_mode || 'Cash',
                 notes: t.notes
             }));
 
@@ -88,6 +89,7 @@ export default function TransactionsPage() {
                             type: data.type!,
                             category_id: data.categoryId,
                             date: data.date!,
+                            payment_mode: data.paymentMode || 'Cash',
                             notes: data.notes
                         } as any);
 
@@ -98,6 +100,7 @@ export default function TransactionsPage() {
                                 type: res.data.type,
                                 categoryId: res.data.category_id,
                                 date: res.data.date,
+                                paymentMode: res.data.payment_mode || 'Cash',
                                 notes: res.data.notes
                             };
                             setTransactions(prev => [newTx, ...prev]);

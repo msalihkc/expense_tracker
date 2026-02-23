@@ -8,7 +8,7 @@ import { getCategories, createCategory, deleteCategory } from "../../actions/dat
 type Category = {
     id: string;
     name: string;
-    color?: string; // We'll map colors to categories later or add to DB. Default to blue for now.
+    color: string;
 }
 
 export default function CategoriesPage() {
@@ -87,7 +87,7 @@ export default function CategoriesPage() {
                 onClose={() => setIsModalOpen(false)}
                 onSubmit={async (data) => {
                     startTransition(async () => {
-                        const res = await createCategory(data.name);
+                        const res = await createCategory(data.name, data.color);
                         if (res.data) {
                             setCategories(prev => [...prev, res.data as Category]);
                             setIsModalOpen(false);
